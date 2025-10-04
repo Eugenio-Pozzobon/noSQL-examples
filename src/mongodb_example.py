@@ -46,11 +46,13 @@ def votar_mongo(id_enquete, id_usuario, opcao):
     """Insere um documento de voto. O índice único cuida da validação."""
     try:
         # Tenta inserir o documento do voto
-        votes_collection.insert_one({
+        votes_collection.insert_one(
+            {
             "poll_id": id_enquete,
             "user_id": id_usuario,
             "option_id": opcao
-        })
+        }
+        )
         print(f"✅ Voto de '{id_usuario}' para a 'Opção {opcao}' registrado!")
         return True
     except DuplicateKeyError:
@@ -66,7 +68,6 @@ def mostrar_placar_mongo(id_enquete):
     """
     print("\n--- Placar em Tempo Real (Ranking MongoDB) ---")
 
-    # PONTO-CHAVE: Pipeline de Agregação
     pipeline = [
         # 1. Filtra os votos apenas para a enquete que queremos
         {"$match": {"poll_id": id_enquete}},
